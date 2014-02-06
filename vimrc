@@ -13,7 +13,6 @@ set number
 set tabstop=4
 set shiftwidth=4
 "set expandtab
-set path=.,~/codebase/gen1/switch/**,~/codebase/gen2/switch/**
 set list
 set listchars=tab:>-
 set splitright
