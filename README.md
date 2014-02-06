@@ -82,3 +82,13 @@ To align equals, simply place the cursor somewhere in the block of text you want
 ```
 :Tabularize /=
 ```
+
+## taglist
+
+taglist needs `exuberant-ctags` installed
+
+```
+sudo apt-get install exuberant-ctags
+```
+
+and the ctags plugin
