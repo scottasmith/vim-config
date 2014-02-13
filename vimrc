@@ -12,7 +12,7 @@ set ignorecase
 set number
 set tabstop=4
 set shiftwidth=4
-"set expandtab
+set expandtab
 set list
 set listchars=tab:>-
 set splitright
@@ -29,3 +29,10 @@ set history=1000
 nmap <F7> :nohlsearch<CR>
 imap <F7> <Esc><F7>a
 
+nmap <F2> :Tabularize /
+
+
+let g:molokai_original = 1
+let g:rehash256 = 1
+
+let g:syntastic_php_checkers=['php', 'phpcs --standard=PSR2', 'phpmd']
