@@ -10,6 +10,9 @@ set incsearch
 set hlsearch
 set ignorecase
 set number
+
+set backspace=indent,eol,start
+set softtabstop=4
 set tabstop=4
 set shiftwidth=4
 set expandtab
@@ -28,11 +31,8 @@ set history=1000
 
 nmap <F7> :nohlsearch<CR>
 imap <F7> <Esc><F7>a
-
 nmap <F2> :Tabularize /
 
+autocmd BufWritePre * :%s/\s\+$//e
 
-let g:molokai_original = 1
-let g:rehash256 = 1
-
-let g:syntastic_php_checkers=['php', 'phpcs --standard=PSR2', 'phpmd']
+let g:syntastic_php_phpcs_args="--report=csv --standard=PSR2"
