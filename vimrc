@@ -109,5 +109,11 @@ nmap <F7> :nohlsearch<CR>
 " Shortcut for Tabularize
 nmap <F2> :Tabularize /
 
+" Vertical split
+nmap <F6> :vsplit<CR>
+
+" Unit test
+nmap <F8> :!vendor/bin/phpunit
+
 " Syntastic options
 let g:syntastic_php_phpcs_args="--report=csv --standard=PSR2"

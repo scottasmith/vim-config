@@ -22,9 +22,6 @@
 [submodule "bundle/vim-jinja"]
 	path = bundle/vim-jinja
 	url = https://github.com/mitsuhiko/vim-jinja.git
-[submodule "vim-less"]
-	path = vim-less
-	url = https://github.com/groenewege/vim-less.git
 [submodule "bundle/vim-less"]
 	path = bundle/vim-less
 	url = https://github.com/groenewege/vim-less.git
