@@ -54,9 +54,6 @@ highlight SpecialKey ctermfg=darkgreen
 " Remove trailing spaces when saving a buffer
 autocmd BufWritePre * :%s/\s\+$//e
 
-" Use htmljinja plugin to syntax highlight both HTML and twig in .twig files
-au BufRead,BufNewFile *.twig set filetype=htmljinja
-
 " Make Command-T find more files (default is 10000)
 let g:CommandTMaxFiles=25000
 
@@ -95,6 +92,8 @@ set complete=.,w,b,u,t
 set nowrap
 
 set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 set laststatus=2
 
 " command and search history
@@ -116,4 +115,14 @@ nmap <F6> :vsplit<CR>
 nmap <F8> :!vendor/bin/phpunit
 
 " Syntastic options
+let g:syntastic_enable_signs=1
+let g:syntastic_auto_loc_list=1
+let g:syntastic_quiet_messages = {'level': 'warnings'}
+
 let g:syntastic_php_phpcs_args="--report=csv --standard=PSR2"
+
+" Use htmljinja plugin to syntax highlight both HTML and twig in .twig files
+au BufRead,BufNewFile *.twig set filetype=htmljinja
+
+" Use puppet plugin to syntax highlight puppet files
+au BufRead,BufNewFile *.pp set filetype=puppet
