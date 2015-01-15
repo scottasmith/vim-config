@@ -70,7 +70,7 @@ set number
 set showmatch
 
 " Automatically change the screen title
-set title
+" set title
 
 " Show the current cursor position in the status line
 
@@ -92,8 +92,8 @@ set complete=.,w,b,u,t
 set nowrap
 
 set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
 set laststatus=2
 
 " command and search history
@@ -116,9 +116,7 @@ nmap <F8> :!vendor/bin/phpunit
 
 " Syntastic options
 let g:syntastic_enable_signs=1
-let g:syntastic_auto_loc_list=1
-let g:syntastic_quiet_messages = {'level': 'warnings'}
-
+let g:syntastic_auto_loc_list=0
 let g:syntastic_php_phpcs_args="--report=csv --standard=PSR2"
 
 " Use htmljinja plugin to syntax highlight both HTML and twig in .twig files
