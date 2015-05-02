@@ -91,16 +91,16 @@ set modeline
 set complete=.,w,b,u,t
 set nowrap
 
-set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
+"set statusline=%F%m%r%h%w\ [FORMAT=%{&ff}]\ [TYPE=%Y]\ [ASCII=\%03.3b]\ [HEX=\%02.2B]\ [POS=%04l,%04v][%p%%]\ [LEN=%L]
 "set statusline+=%{SyntasticStatuslineFlag()}
 "set statusline+=%*
-set laststatus=2
+" set laststatus=2
 
 " command and search history
 set history=1000
 
 " Shortcut for refreshing Command-T's file list
-nmap <F5> :CommandTFlush<CR>
+nmap <F5> :CommandTFlush<CR>:call ReloadAllSnippets()<CR>
 
 " Deactivate search highlight
 nmap <F7> :nohlsearch<CR>
@@ -118,9 +118,13 @@ nmap <F8> :!vendor/bin/phpunit
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=0
 let g:syntastic_php_phpcs_args="--report=csv --standard=PSR2"
+let g:syntastic_php_phpmd_post_args="unusedcode,naming"
 
 " Use htmljinja plugin to syntax highlight both HTML and twig in .twig files
 au BufRead,BufNewFile *.twig set filetype=htmljinja
 
 " Use puppet plugin to syntax highlight puppet files
 au BufRead,BufNewFile *.pp set filetype=puppet
+
+" Colours
+set t_Co=256
