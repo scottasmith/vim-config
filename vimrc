@@ -91,20 +91,21 @@ let g:CommandTMaxFiles=25000 " Make Command-T find more files (default is 10000)
 
 " Syntastic
 """""""""""
-
-if has("autocmd")
-    autocmd BufRead $HOME/repos/*,/var/repos/* :call EnableSyntastic()
-endif
+let g:syntastic_enable_signs=1
+let g:syntastic_auto_loc_list=0
+let g:syntastic_php_phpcs_args="--report=csv --standard=PSR2"
+let g:syntastic_php_phpmd_post_args="unusedcode,naming"
 
 """""""""""""""""""""""""""""
 " Shortcuts
 """""""""""""""""""""""""""""
 nmap <F2> :Tabularize /
-nmap <F5> :CommandTFlush<CR>:so %<CR>:call ReloadAllSnippets()<CR>:nohlsearch<CR>
+nmap <F5> :CommandTFlush<CR>:so %<CR>:nohlsearch<CR>:call ReloadAllSnippets()<CR>
 nmap <F7> :nohlsearch<CR>
 nmap <F6> :vsplit<CR>
 nmap <F8> :!vendor/bin/phpunit
 nmap <F9> :TlistToggle<CR>
+nmap <F10> :SyntasticToggleMode<CR>
 
 """"""""""""""""""""""
 " Whitespace
@@ -130,11 +131,4 @@ function! Preserve(command)
     execute a:command
     " Clean up: restore cursor position
     call cursor(l, c)
-endfunction
-
-function! EnableSyntastic()
-    let g:syntastic_enable_signs=1
-    let g:syntastic_auto_loc_list=0
-    let g:syntastic_php_phpcs_args="--report=csv --standard=PSR2"
-    let g:syntastic_php_phpmd_post_args="unusedcode,naming"
 endfunction
