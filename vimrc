@@ -27,7 +27,7 @@ set hidden
 
 " show possible completions of commands, file names etc in status line
 set wildmenu
-set wildmode=list:longest,full
+set wildmode=full
 
 set list                      " display whitespace
 set listchars=tab:>-,trail:·  " highlight tabs and trailing spaces
@@ -64,6 +64,12 @@ set undoreload=10000 " Maximum number of lines to save for undo on a buffer relo
 set t_Co=256
 syn on " turn on syntax highlighting
 
+let g:rehash256 = 1
+let g:molokai_original = 1
+colorscheme molokai
+let g:airline_powerline_fonts = 1
+let g:airline_theme='molokai'
+
 " set the colour for highlighted stuff
 highlight SpecialKey ctermfg=darkgreen
 
@@ -94,18 +100,21 @@ let g:CommandTMaxFiles=25000 " Make Command-T find more files (default is 10000)
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=0
 let g:syntastic_php_phpcs_args="--report=csv --standard=PSR2"
-let g:syntastic_php_phpmd_post_args="unusedcode,naming"
+let g:syntastic_php_phpmd_post_args="codesize,design,unusedcode,naming,controversial"
+
 
 """""""""""""""""""""""""""""
 " Shortcuts
 """""""""""""""""""""""""""""
 nmap <F2> :Tabularize /
-nmap <F5> :CommandTFlush<CR>:so %<CR>:nohlsearch<CR>:call ReloadAllSnippets()<CR>
-nmap <F7> :nohlsearch<CR>
+nmap <F5> :CommandTFlush<CR>:so $MYVIMRC<CR>:nohlsearch<CR>:call ReloadAllSnippets()<CR>
 nmap <F6> :vsplit<CR>
-nmap <F8> :!vendor/bin/phpunit
+nmap <F7> :nohlsearch<CR>
+nmap <Leader>u :!vendor/bin/phpunit
+nmap <Leader>i :!vendor/bin/phpunit --filter <C-R><C-W> <CR>
+nmap <Leader>o :!vendor/bin/phpunit -c phpunit-integration.xml <CR>
 nmap <F9> :TlistToggle<CR>
-nmap <F10> :SyntasticToggleMode<CR>
+nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
 
 """"""""""""""""""""""
 " Whitespace
@@ -116,7 +125,6 @@ if has ("autocmd")
     autocmd BufWritePre *.php,*.js,*.twig :call Preserve("%s/\\s\\+$//e")
     autocmd BufWritePre $HOME/repos/*,/var/repos/* :call Preserve("%s/\\s\\+$//e")
 endif
-nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
 
 """"""""""""""""""""""
 " Functions
