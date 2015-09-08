@@ -1,9 +1,9 @@
 snippet dpd
 	/**
-	 * @dataProvider ${1:dataprovider}
+	 * @dataProvider provide${1:dataprovider}
 	 */
 snippet dpdf
-	public function ${1:dataprovider}()
+	public function provide${1:dataprovider}()
 	{
 		return [
 			[${2}],
@@ -17,7 +17,7 @@ snippet zffactory
 	use Zend\ServiceManager\FactoryInterface;
 	use Zend\ServiceManager\ServiceLocatorInterface;
 
-	class ${2:Factory} implements FactoryInterface
+	class ${2:Factory}Factory implements FactoryInterface
 	{
 		public function createService(ServiceLocatorInterface $serviceLocator)
 		{
@@ -28,13 +28,13 @@ snippet unittest
 	<?php
 	namespace ${1:namespace};
 
-	use ${2:subjectuse}
+	use ${2:subjectuse};
 
-	class ${3:testclass} extends \PHPUnit_Framework_TestCase
+	class ${3:testclass}Test extends \PHPUnit_Framework_TestCase
 	{
 		private $${4:subjectproperty};
 
-		public function setUp()
+		protected function setUp()
 		{
 			$this->${5:subjectproperty} = new ${6:subject};
 		}
@@ -43,18 +43,18 @@ snippet unittestzffactory
 	<?php
 	namespace ${1:namespace};
 
-	use ${2:factoryuse};
+	use ${2:factoryuse}Factory;
 	use Zend\ServiceManager\ServiceManager;
 
-	class ${3:testclass} extends \PHPUnit_Framework_TestCase
+	class ${3:testclass}FactoryTest extends \PHPUnit_Framework_TestCase
 	{
 		private $serviceManager;
 		private $factory;
 
-		public function setUp()
+		protected function setUp()
 		{
 			$this->serviceManager = new ServiceManager;
-			$this->factory        = new ${4:factory};
+			$this->factory        = new ${4:factory}Factory;
 		}
 
 		public function testIsZfFactory()

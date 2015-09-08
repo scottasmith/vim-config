@@ -101,7 +101,9 @@ let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=0
 let g:syntastic_php_phpcs_args="--report=csv --standard=PSR2"
 let g:syntastic_php_phpmd_post_args="codesize,design,unusedcode,naming,controversial"
+let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
 
+let g:syntastic_ignore_repos = ['gen1', 'gen2', 'vms', 'ukwh']
 
 """""""""""""""""""""""""""""
 " Shortcuts
@@ -124,6 +126,7 @@ nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
 if has ("autocmd")
     autocmd BufWritePre *.php,*.js,*.twig :call Preserve("%s/\\s\\+$//e")
     autocmd BufWritePre $HOME/repos/*,/var/repos/* :call Preserve("%s/\\s\\+$//e")
+    autocmd BufWritePre $HOME/repos/* :call CallSyntastic(expand('<amatch>'))
 endif
 
 """"""""""""""""""""""
@@ -139,4 +142,19 @@ function! Preserve(command)
     execute a:command
     " Clean up: restore cursor position
     call cursor(l, c)
+endfunction
+
+function! CallSyntastic(filename)
+    let file = matchstr(a:filename, '/\(' . join(g:syntastic_ignore_repos, '\|') . '\)/')
+    :echo file
+    if !empty(file)
+        return
+    endif
+
+    if !exists("g:enabled_syntastic")
+        execute SyntasticToggleMode()
+        let g:enabled_syntastic = 1
+    endif
+
+    execute SyntasticCheck()
 endfunction
