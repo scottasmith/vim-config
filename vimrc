@@ -58,9 +58,7 @@ set undofile
 set undolevels=1000  " Maximum number of changes that can be undone
 set undoreload=10000 " Maximum number of lines to save for undo on a buffer reload
 
-"""""""""""""""""""""""""""""
-" Theme
-"""""""""""""""""""""""""""""
+" Set up theme
 set t_Co=256
 syn on " turn on syntax highlighting
 
@@ -73,37 +71,18 @@ let g:airline_theme='molokai'
 " set the colour for highlighted stuff
 highlight SpecialKey ctermfg=darkgreen
 
-if has("autocmd")
-    " Use htmljinja plugin to syntax highlight both HTML and twig in .twig files
-    autocmd BufRead,BufNewFile *.twig set filetype=htmljinja
-
-    " Use puppet plugin to syntax highlight puppet files
-    autocmd BufRead,BufNewFile *.pp set filetype=puppet
-endif
-
-"""""""""""""""""""""""""""""
-" Plugins
-"""""""""""""""""""""""""""""
-
-" BufExplorer
-"""""""""""""
-if has("autocmd")
-    autocmd BufEnter,BufNew,BufRead,BufNewFile * set list " BufExplorer has a bug that sets list off. This fixes it
-endif
+" Old repos
+let g:old_repos = ['gen1', 'gen2', 'vms', 'ukwh']
 
 " Command-T
-"""""""""""
 let g:CommandTMaxFiles=25000 " Make Command-T find more files (default is 10000)
 
 " Syntastic
-"""""""""""
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=0
 let g:syntastic_php_phpcs_args="--report=csv --standard=PSR2"
 let g:syntastic_php_phpmd_post_args="codesize,design,unusedcode,naming,controversial"
 let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_filetypes': [] }
-
-let g:syntastic_ignore_repos = ['gen1', 'gen2', 'vms', 'ukwh']
 
 """""""""""""""""""""""""""""
 " Shortcuts
@@ -119,19 +98,49 @@ nmap <F9> :TlistToggle<CR>
 nmap _$ :call Preserve("%s/\\s\\+$//e")<CR>
 
 """"""""""""""""""""""
-" Whitespace
+" Buffer functions
 """"""""""""""""""""""
+
+" File types
+if has("autocmd")
+    " Use htmljinja plugin to syntax highlight both HTML and twig in .twig files
+    autocmd BufRead,BufNewFile *.twig set filetype=htmljinja
+
+    " Use puppet plugin to syntax highlight puppet files
+    autocmd BufRead,BufNewFile *.pp set filetype=puppet
+endif
+
+" BufExplorer
+if has("autocmd")
+    autocmd BufEnter,BufNew,BufRead,BufNewFile * set list " BufExplorer has a bug that sets list off. This fixes it
+endif
 
 " Remove trailing spaces when saving a buffer
 if has ("autocmd")
     autocmd BufWritePre *.php,*.js,*.twig :call Preserve("%s/\\s\\+$//e")
     autocmd BufWritePre $HOME/repos/*,/var/repos/* :call Preserve("%s/\\s\\+$//e")
+endif
+
+" Enable Syntastic if not ignored
+if has ("autocmd")
     autocmd BufWritePre $HOME/repos/* :call CallSyntastic(expand('<amatch>'))
+endif
+
+" Setup gen1/2/etc
+if has ("autocmd")
+    autocmd BufRead $HOME/repos/* :call SetupOldGens(expand('<amatch>'))
 endif
 
 """"""""""""""""""""""
 " Functions
 """"""""""""""""""""""
+
+function IsOldGen(filename)
+    let matched = matchstr(a:filename, '/\(' . join(g:old_repos, '\|') . '\)/')
+    if !empty(matched)
+        return 1
+    endif
+endfunction
 
 " http://technotales.wordpress.com/2010/03/31/preserve-a-vim-function-that-keeps-your-state/
 function! Preserve(command)
@@ -145,9 +154,7 @@ function! Preserve(command)
 endfunction
 
 function! CallSyntastic(filename)
-    let file = matchstr(a:filename, '/\(' . join(g:syntastic_ignore_repos, '\|') . '\)/')
-    :echo file
-    if !empty(file)
+    if IsOldGen(a:filename)
         return
     endif
 
@@ -157,4 +164,12 @@ function! CallSyntastic(filename)
     endif
 
     execute SyntasticCheck()
+endfunction
+
+function! SetupOldGens(filename)
+    if !IsOldGen(a:filename)
+        return
+    endif
+
+    set noexpandtab
 endfunction
