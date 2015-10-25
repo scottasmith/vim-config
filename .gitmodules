@@ -4,9 +4,6 @@
 [submodule "bundle/file-line"]
 	path = bundle/file-line
 	url = https://github.com/bogado/file-line.git
-[submodule "bundle/command-t"]
-	path = bundle/command-t
-	url = git://git.wincent.com/command-t.git
 [submodule "bundle/tabular"]
 	path = bundle/tabular
 	url = https://github.com/godlygeek/tabular.git
