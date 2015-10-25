@@ -74,8 +74,12 @@ highlight SpecialKey ctermfg=darkgreen
 " Old repos
 let g:old_repos = ['gen1', 'gen2', 'vms', 'ukwh']
 
-" Command-T
-let g:CommandTMaxFiles=25000 " Make Command-T find more files (default is 10000)
+" CtrlP
+"""""""""""
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+let g:ctrlp_custom_ignore = {'dir':  '\v[\/]\.(git)$', 'file': '\v\.(so)$'}
+let g:ctrlp_max_files = 0
+let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:100,results:100'
 
 " Syntastic
 let g:syntastic_enable_signs=1
@@ -91,6 +95,7 @@ nmap <F2> :Tabularize /
 nmap <F5> :CommandTFlush<CR>:so $MYVIMRC<CR>:nohlsearch<CR>:call ReloadAllSnippets()<CR>
 nmap <F6> :vsplit<CR>
 nmap <F7> :nohlsearch<CR>
+nmap <Leader>p :CtrlP<CR>
 nmap <Leader>u :!vendor/bin/phpunit
 nmap <Leader>i :!vendor/bin/phpunit --filter <C-R><C-W> <CR>
 nmap <Leader>o :!vendor/bin/phpunit -c phpunit-integration.xml <CR>
@@ -121,26 +126,14 @@ if has ("autocmd")
     autocmd BufWritePre $HOME/repos/*,/var/repos/* :call Preserve("%s/\\s\\+$//e")
 endif
 
-" Enable Syntastic if not ignored
+" Enable Syntastic
 if has ("autocmd")
     autocmd BufWritePre $HOME/repos/* :call CallSyntastic(expand('<amatch>'))
-endif
-
-" Setup gen1/2/etc
-if has ("autocmd")
-    autocmd BufRead $HOME/repos/* :call SetupOldGens(expand('<amatch>'))
 endif
 
 """"""""""""""""""""""
 " Functions
 """"""""""""""""""""""
-
-function IsOldGen(filename)
-    let matched = matchstr(a:filename, '/\(' . join(g:old_repos, '\|') . '\)/')
-    if !empty(matched)
-        return 1
-    endif
-endfunction
 
 " http://technotales.wordpress.com/2010/03/31/preserve-a-vim-function-that-keeps-your-state/
 function! Preserve(command)
@@ -154,22 +147,10 @@ function! Preserve(command)
 endfunction
 
 function! CallSyntastic(filename)
-    if IsOldGen(a:filename)
-        return
-    endif
-
     if !exists("g:enabled_syntastic")
         execute SyntasticToggleMode()
         let g:enabled_syntastic = 1
     endif
 
     execute SyntasticCheck()
-endfunction
-
-function! SetupOldGens(filename)
-    if !IsOldGen(a:filename)
-        return
-    endif
-
-    set noexpandtab
 endfunction
