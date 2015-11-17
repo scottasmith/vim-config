@@ -71,9 +71,6 @@ let g:airline_theme='molokai'
 " set the colour for highlighted stuff
 highlight SpecialKey ctermfg=darkgreen
 
-" Old repos
-let g:old_repos = ['gen1', 'gen2', 'vms', 'ukwh']
-
 " CtrlP
 """""""""""
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
@@ -82,6 +79,7 @@ let g:ctrlp_max_files = 0
 let g:ctrlp_match_window = 'bottom,order:btt,min:1,max:100,results:100'
 
 " Syntastic
+let g:enabled_syntastic = 1
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=0
 let g:syntastic_php_phpcs_args="--report=csv --standard=PSR2"
@@ -92,7 +90,7 @@ let g:syntastic_mode_map = { 'mode': 'passive', 'active_filetypes': [],'passive_
 " Shortcuts
 """""""""""""""""""""""""""""
 nmap <F2> :Tabularize /
-nmap <F5> :CommandTFlush<CR>:so $MYVIMRC<CR>:nohlsearch<CR>:call ReloadAllSnippets()<CR>
+nmap <F5> :CtrlPClearAllCaches<CR> :so $MYVIMRC<CR>:nohlsearch<CR>:call ReloadAllSnippets()<CR>
 nmap <F6> :vsplit<CR>
 nmap <F7> :nohlsearch<CR>
 nmap <Leader>p :CtrlP<CR>
@@ -113,6 +111,9 @@ if has("autocmd")
 
     " Use puppet plugin to syntax highlight puppet files
     autocmd BufRead,BufNewFile *.pp set filetype=puppet
+
+    " Use mysql instead of sql
+    autocmd BufRead,BufNewFile *.sql set filetype=mysql
 endif
 
 " BufExplorer
@@ -124,11 +125,6 @@ endif
 if has ("autocmd")
     autocmd BufWritePre *.php,*.js,*.twig :call Preserve("%s/\\s\\+$//e")
     autocmd BufWritePre $HOME/repos/*,/var/repos/* :call Preserve("%s/\\s\\+$//e")
-endif
-
-" Enable Syntastic
-if has ("autocmd")
-    autocmd BufWritePre $HOME/repos/* :call CallSyntastic(expand('<amatch>'))
 endif
 
 """"""""""""""""""""""
@@ -144,13 +140,4 @@ function! Preserve(command)
     execute a:command
     " Clean up: restore cursor position
     call cursor(l, c)
-endfunction
-
-function! CallSyntastic(filename)
-    if !exists("g:enabled_syntastic")
-        execute SyntasticToggleMode()
-        let g:enabled_syntastic = 1
-    endif
-
-    execute SyntasticCheck()
 endfunction
