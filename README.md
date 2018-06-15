@@ -2,14 +2,12 @@
 
 Vim plugins and settings i use
 
-Thanks to Drew Neil for getting started [this vimcast]((http://vimcasts.org/episodes/synchronizing-plugins-with-git-submodules-and-pathogen))
-
 # Installation
 
-1. Make sure ruby and vim-nox are installed (vim with ruby support is required for the Command-T plugin)
+1. Make sure vim is installed
 
 ```
-sudo apt-get install ruby-full vim-nox
+sudo apt-get install vim
 ```
 
 2. Clone this repo into ~/.vim
@@ -59,19 +57,11 @@ file-line allows you to open files in vim on a specific line with
 vim path/to/file:lineNo
 ```
 
-## Command-T
+## ctrlp
 
-Command-T provides an extremely fast way to open files simply by typing characters that appear in their paths.
+ctrlp provides a fast way to open files simply by typing characters that appear in their paths.
 
-It requires ruby and vim with ruby support to be installed.
-
-Whenever this plugin is installed or updated, it must be built using
-
-```
-cd ~/.vim/bundle/command-t/ruby/command-t
-ruby extconf.rb
-make
-```
+Simply hold Ctrl and press p then type away to find the required file
 
 ## tabular
 
